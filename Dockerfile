@@ -10,7 +10,6 @@ RUN rm -f /etc/apt/sources.list.d/* && \
     apt-get update
 
 
-RUN apt-get install -y --no-install-recommends \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     xfce4-core \
     xfce4-terminal \
