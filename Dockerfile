@@ -8,10 +8,13 @@ RUN rm -f /etc/apt/sources.list.d/* && \
     echo "deb http://archive.debian.org/debian bullseye main contrib non-free" > /etc/apt/sources.list && \
     echo "Acquire::Check-Valid-Until false;" > /etc/apt/apt.conf.d/99archive && \
     apt-get update
-
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    xfce4-core \
+    
+    
+    RUN apt-get update && apt-get install -y --no-install-recommends \
+    xfdesktop4 \
+    xfce4-panel \
+    xfce4-session \
+    xfwm4 \
     xfce4-terminal \
     x11vnc \
     xvfb \
@@ -23,7 +26,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     git \
-    && apt-get -f install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
