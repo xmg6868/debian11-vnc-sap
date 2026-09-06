@@ -12,16 +12,37 @@ RUN rm -f /etc/apt/sources.list.d/* && \
 
 RUN apt-get install -y --no-install-recommends \
     xfce4 \
+    xfce4-terminal \
     x11vnc \
+    xvfb \
     supervisor \
     dbus-x11 \
     xterm \
     python3 \
+    python3-pip \
     wget \
-    curl
+    curl \
+    git \
+    ca-certificates \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+
+RUN git clone https://github.com/novnc/noVNC.git /opt/novnc
+
+
+RUN mkdir -p /root/.vnc && \
+    x11vnc -storepasswd password /root/.vnc/passwd
+
+
+COPY start.sh /start.sh
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+
+RUN chmod +x /start.sh
 
 
 EXPOSE 8080
 
 
-CMD ["/bin/bash"]
+CMD ["/start.sh"]
