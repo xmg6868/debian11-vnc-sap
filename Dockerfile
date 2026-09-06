@@ -23,8 +23,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 
-RUN git clone https://github.com/novnc/noVNC.git /opt/novnc
-
+RUN wget -O /tmp/novnc.tar.gz https://github.com/novnc/noVNC/archive/refs/heads/master.tar.gz && \
+    mkdir -p /opt && \
+    tar -xzf /tmp/novnc.tar.gz -C /opt && \
+    mv /opt/noVNC-master /opt/novnc && \
+    rm /tmp/novnc.tar.gz
 
 RUN mkdir -p /root/.vnc && \
     x11vnc -storepasswd password /root/.vnc/passwd
