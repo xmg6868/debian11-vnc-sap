@@ -1,0 +1,45 @@
+name: Build Debian VNC Image
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+
+jobs:
+
+ build:
+
+  runs-on: ubuntu-latest
+
+
+  permissions:
+    packages: write
+    contents: read
+
+
+  steps:
+
+  - name: Checkout
+    uses: actions/checkout@v4
+
+
+  - name: Login GHCR
+    uses: docker/login-action@v3
+    with:
+      registry: ghcr.io
+      username: ${{ github.actor }}
+      password: ${{ secrets.GITHUB_TOKEN }}
+
+
+  - name: Build image
+    run: |
+      docker build \
+      -t ghcr.io/${{ github.repository_owner }}/debian11-vnc-sap:latest .
+
+
+  - name: Push image
+    run: |
+      docker push \
+      ghcr.io/${{ github.repository_owner }}/debian11-vnc-sap:latest
