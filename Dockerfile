@@ -1,9 +1,14 @@
-FROM debian:11.11
+FROM debian:11
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV DISPLAY=:1
 
 
-RUN apt-get update
+RUN rm -f /etc/apt/sources.list.d/* && \
+    echo "deb http://archive.debian.org/debian bullseye main contrib non-free" > /etc/apt/sources.list && \
+    echo "deb http://archive.debian.org/debian bullseye-security main contrib non-free" >> /etc/apt/sources.list && \
+    echo "Acquire::Check-Valid-Until false;" > /etc/apt/apt.conf.d/99archive && \
+    apt-get update
 
 
 RUN apt-get install -y --no-install-recommends \
@@ -26,5 +31,6 @@ RUN apt-get install -y --no-install-recommends \
 
 
 EXPOSE 8080
+
 
 CMD ["/bin/bash"]
