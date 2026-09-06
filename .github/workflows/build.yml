@@ -1,4 +1,5 @@
-name: Build Debian VNC Image
+name: Build Debian11 noVNC
+
 
 on:
   workflow_dispatch:
@@ -15,11 +16,12 @@ jobs:
 
 
   permissions:
-    packages: write
     contents: read
+    packages: write
 
 
   steps:
+
 
   - name: Checkout
     uses: actions/checkout@v4
@@ -33,13 +35,13 @@ jobs:
       password: ${{ secrets.GITHUB_TOKEN }}
 
 
-  - name: Build image
+  - name: Build
     run: |
       docker build \
-      -t ghcr.io/${{ github.repository_owner }}/debian11-vnc-sap:latest .
+      -t ghcr.io/${{ github.repository_owner }}/debian11-novnc-sap:latest .
 
 
-  - name: Push image
+  - name: Push
     run: |
       docker push \
-      ghcr.io/${{ github.repository_owner }}/debian11-vnc-sap:latest
+      ghcr.io/${{ github.repository_owner }}/debian11-novnc-sap:latest
