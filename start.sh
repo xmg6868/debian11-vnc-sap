@@ -1,13 +1,15 @@
 #!/bin/bash
 
+mkdir -p /tmp/runtime-root
+chmod 700 /tmp/runtime-root
 
-mkdir -p /root/.vnc
+export XDG_RUNTIME_DIR=/tmp/runtime-root
 
 
-vncserver :1 \
- -geometry 1280x720 \
- -depth 24 \
- -localhost no
+tigervncserver :1 \
+    -geometry 1280x720 \
+    -depth 24 \
+    -localhost no
 
 
 exec supervisord -n
