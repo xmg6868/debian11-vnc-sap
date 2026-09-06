@@ -1,15 +1,26 @@
 #!/bin/bash
 
-mkdir -p /tmp/runtime-root
-chmod 700 /tmp/runtime-root
-
-export XDG_RUNTIME_DIR=/tmp/runtime-root
+export DISPLAY=:1
 
 
-tigervncserver :1 \
-    -geometry 1280x720 \
-    -depth 24 \
-    -localhost no
+Xvfb :1 -screen 0 1280x720x24 &
+
+
+sleep 3
+
+
+startxfce4 &
+
+
+sleep 5
+
+
+x11vnc \
+-display :1 \
+-rfbauth /root/.vnc/passwd \
+-forever \
+-shared \
+-bg
 
 
 exec supervisord -n
