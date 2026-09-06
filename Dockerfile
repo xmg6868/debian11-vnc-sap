@@ -1,23 +1,17 @@
 FROM debian:11.11
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV DISPLAY=:1
 
 
 RUN rm -f /etc/apt/sources.list.d/* && \
     echo "deb http://archive.debian.org/debian bullseye main contrib non-free" > /etc/apt/sources.list && \
-    echo "Acquire::Check-Valid-Until false;" > /etc/apt/apt.conf.d/99archive && \
-    apt-get update
-    
-    
-    RUN apt-get update && apt-get install -y --no-install-recommends \
-    xfdesktop4 \
-    xfce4-panel \
-    xfce4-session \
-    xfwm4 \
-    xfce4-terminal \
+    echo "Acquire::Check-Valid-Until false;" > /etc/apt/apt.conf.d/99archive
+
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
     x11vnc \
     xvfb \
+    xfce4 \
     supervisor \
     dbus-x11 \
     xterm \
@@ -25,7 +19,6 @@ RUN rm -f /etc/apt/sources.list.d/* && \
     wget \
     curl \
     ca-certificates \
-    git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
