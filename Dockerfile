@@ -4,12 +4,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV DISPLAY=:1
 
 
-RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
-    sed -i '/security.debian.org/d' /etc/apt/sources.list && \
+RUN rm -f /etc/apt/sources.list.d/* && \
+    echo "deb http://archive.debian.org/debian bullseye main contrib non-free" > /etc/apt/sources.list && \
+    echo "Acquire::Check-Valid-Until false;" > /etc/apt/apt.conf.d/99no-check-valid && \
     apt-get update
 
 
 RUN apt-get install -y \
+RUN apt-get install -y --no-install-recommends \
     xfce4 \
     xfce4-goodies \
     tigervnc-standalone-server \
@@ -24,7 +26,8 @@ RUN apt-get install -y \
     python3-pip \
     git \
     ca-certificates \
-    && apt-get clean
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 
 RUN pip3 install websockify
