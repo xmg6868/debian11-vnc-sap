@@ -1,32 +1,38 @@
-FROM debian:11-slim
+FROM debian:11
 
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DISPLAY=:1
-ENV VNC_PASSWORD=password
 
 
-RUN apt update && apt install -y \
+RUN apt-get update && apt-get install -y \
     xfce4 \
     xfce4-goodies \
     tigervnc-standalone-server \
-    novnc \
-    websockify \
     supervisor \
     dbus-x11 \
     xterm \
-    firefox-esr \
     wget \
     curl \
     net-tools \
     procps \
-    && apt clean
+    python3 \
+    python3-pip \
+    git \
+    && apt-get clean
+
+
+RUN pip3 install websockify
+
+
+RUN git clone https://github.com/novnc/noVNC.git /opt/novnc \
+    && ln -s /opt/novnc/vnc.html /opt/novnc/index.html
 
 
 RUN mkdir -p /root/.vnc
 
 
-RUN echo "$VNC_PASSWORD" | vncpasswd -f > /root/.vnc/passwd \
+RUN echo "password" | vncpasswd -f > /root/.vnc/passwd \
     && chmod 600 /root/.vnc/passwd
 
 
