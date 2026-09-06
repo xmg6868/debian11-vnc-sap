@@ -1,4 +1,4 @@
-FROM debian:11
+FROM debian:11.11
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DISPLAY=:1
@@ -11,7 +11,8 @@ RUN rm -f /etc/apt/sources.list.d/* && \
 
 
 RUN apt-get install -y --no-install-recommends \
-    xfce4 \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    xfce4-core \
     xfce4-terminal \
     x11vnc \
     xvfb \
@@ -19,11 +20,11 @@ RUN apt-get install -y --no-install-recommends \
     dbus-x11 \
     xterm \
     python3 \
-    python3-pip \
     wget \
     curl \
-    git \
     ca-certificates \
+    git \
+    && apt-get -f install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
