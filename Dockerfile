@@ -10,25 +10,15 @@ RUN rm -f /etc/apt/sources.list.d/* && \
     apt-get update
 
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get install -y --no-install-recommends \
     xfce4 \
-    xfce4-terminal \
-    tigervnc-common \
-    tigervnc-tools \
-    tigervnc-scraping-server \
+    x11vnc \
     supervisor \
     dbus-x11 \
     xterm \
     python3 \
-    python3-pip \
     wget \
-    curl \
-    ca-certificates \
-    net-tools \
-    procps \
-    && apt-get -f install -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    curl
 
 
 EXPOSE 8080
