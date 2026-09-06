@@ -1,11 +1,15 @@
 FROM debian:11
 
-
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DISPLAY=:1
 
 
-RUN apt-get update && apt-get install -y \
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
+    sed -i '/security.debian.org/d' /etc/apt/sources.list && \
+    apt-get update
+
+
+RUN apt-get install -y \
     xfce4 \
     xfce4-goodies \
     tigervnc-standalone-server \
@@ -19,21 +23,21 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     git \
+    ca-certificates \
     && apt-get clean
 
 
 RUN pip3 install websockify
 
 
-RUN git clone https://github.com/novnc/noVNC.git /opt/novnc \
-    && ln -s /opt/novnc/vnc.html /opt/novnc/index.html
+RUN git clone https://github.com/novnc/noVNC.git /opt/novnc
 
 
 RUN mkdir -p /root/.vnc
 
 
-RUN echo "password" | vncpasswd -f > /root/.vnc/passwd \
-    && chmod 600 /root/.vnc/passwd
+RUN echo "password" | vncpasswd -f > /root/.vnc/passwd && \
+    chmod 600 /root/.vnc/passwd
 
 
 COPY start.sh /start.sh
